@@ -2,7 +2,7 @@
 # Copyright (c) 2023 Airbyte, Inc., all rights reserved.
 #
 
-import logging
+import logging, datetime
 from http import HTTPStatus
 from itertools import chain
 from typing import Any, List, Mapping, Optional, Tuple
@@ -113,6 +113,17 @@ class SourceHubspot(AbstractSource):
 
     def get_common_params(self, config) -> Mapping[str, Any]:
         start_date = config.get("start_date", DEFAULT_START_DATE)
+
+        start_date_offset = config.get("relative_start_date_offset", 0)
+
+        if start_date_offset > 0:
+            # set start_Date relative to today
+            now = datetime.date.today()
+            delta = datetime.timedelta(days=start_date_offset)
+            start_date = (now - delta)
+
+            print(f"getting config: now: {now} // delta: {delta} // start_date: {start_date}")
+
         credentials = config["credentials"]
         api = self.get_api(config=config)
         return dict(api=api, start_date=start_date, credentials=credentials)
