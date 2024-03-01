@@ -18,6 +18,16 @@ connectionSpecification:
       examples:
         - "2017-01-25T00:00:00Z"
       format: date-time
+    relative_start_date_offset:
+      title: Relative date offset
+      type: integer
+      minimum: 0
+      maximum: 365
+      description: >-
+        Offset relative to current date, measured in whole days (integer between 1 and 365). If this is set, it takes precedence over the set start_date. To
+        gather data with a moving window fo a week, set this to 7 (days).
+      examples:
+        - "7"
     credentials:
       title: Authentication
       description: Choose how to authenticate to HubSpot.
